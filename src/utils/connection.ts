@@ -1,10 +1,11 @@
-import jsforce from 'jsforce';
+import * as jsforce from 'jsforce';
 import { ConnectionType, ConnectionConfig } from '../types/connection.js';
 import https from 'https';
 import querystring from 'querystring';
 
-// Extract Connection class from jsforce to ensure CommonJS compatibility
-const { Connection } = jsforce;
+// Get the default export and extract Connection
+const JSForce = (jsforce as any).default || jsforce;
+const { Connection } = JSForce;
 
 /**
  * Creates a Salesforce connection using either username/password or OAuth 2.0 Client Credentials Flow
