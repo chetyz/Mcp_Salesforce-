@@ -3,6 +3,9 @@ import { ConnectionType, ConnectionConfig } from '../types/connection.js';
 import https from 'https';
 import querystring from 'querystring';
 
+// Extract Connection class from jsforce to ensure CommonJS compatibility
+const { Connection } = jsforce;
+
 /**
  * Creates a Salesforce connection using either username/password or OAuth 2.0 Client Credentials Flow
  * @param config Optional connection configuration
@@ -82,7 +85,7 @@ export async function createSalesforceConnection(config?: ConnectionConfig) {
       });
       
       // Create connection with the access token
-      const conn = new jsforce.Connection({
+      const conn = new Connection({
         instanceUrl: tokenResponse.instance_url,
         accessToken: tokenResponse.access_token
       });
@@ -101,7 +104,7 @@ export async function createSalesforceConnection(config?: ConnectionConfig) {
       console.error('Connecting to Salesforce using Username/Password authentication');
       
       // Create connection with login URL
-      const conn = new jsforce.Connection({ loginUrl });
+      const conn = new Connection({ loginUrl });
       
       await conn.login(
         username,
