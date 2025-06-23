@@ -1,11 +1,6 @@
-import * as jsforce from 'jsforce';
 import { ConnectionType, ConnectionConfig } from '../types/connection.js';
 import https from 'https';
 import querystring from 'querystring';
-
-// Get the default export and extract Connection
-const JSForce = (jsforce as any).default || jsforce;
-const { Connection } = JSForce;
 
 /**
  * Creates a Salesforce connection using either username/password or OAuth 2.0 Client Credentials Flow
@@ -13,6 +8,11 @@ const { Connection } = JSForce;
  * @returns Connected jsforce Connection instance
  */
 export async function createSalesforceConnection(config?: ConnectionConfig) {
+  // Dynamic import to handle CommonJS/ESM compatibility
+  const jsforce = await import('jsforce');
+  const JSForce = (jsforce as any).default || jsforce;
+  const { Connection } = JSForce;
+
   // Determine connection type from environment variables or config
   const connectionType = config?.type || 
     (process.env.SALESFORCE_CONNECTION_TYPE as ConnectionType) || 
